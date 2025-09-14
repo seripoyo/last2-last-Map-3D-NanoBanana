@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Download, Bug, AlertTriangle, CheckCircle, XCircle, Clock, Zap } from 'lucide-react';
 import { loadAISdkPackages, isAISdkAvailable } from '../utils/aiSdkLoader';
-import { detectEnvironment, callYouWareAPI, getAIConfig, logEnvironmentInfo } from '../utils/environmentDetector';
+import { detectEnvironment, getAIConfig, logEnvironmentInfo } from '../utils/environmentDetector';
 
 interface DebugResult {
   timestamp: string;
@@ -393,8 +393,11 @@ export function DeepDebugger() {
 
     // Basic connectivity test using environment-aware API call
     try {
-      const connectivityTest = await callYouWareAPI('/health', {
-        method: 'GET'
+      const connectivityTest = await fetch('https://api.youware.com/public/v1/ai/health', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer sk-YOUWARE'
+        }
       });
       
       results.push({
@@ -423,8 +426,11 @@ export function DeepDebugger() {
     
     // CORS test using environment-aware API call
     try {
-      const corsTest = await callYouWareAPI('/models', {
-        method: 'GET'
+      const corsTest = await fetch('https://api.youware.com/public/v1/ai/models', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer sk-YOUWARE'
+        }
       });
       
       results.push({
@@ -456,68 +462,61 @@ export function DeepDebugger() {
 
   const runAuthenticationDeepDive = async (): Promise<DebugResult[]> => {
     const results: DebugResult[] = [];
-    
-    // Test different authentication methods
-    const authMethods = [
-      { name: 'Bearer Token', headers: { 'Authorization': 'Bearer sk-YOUWARE' } },
-      { name: 'API Key Header', headers: { 'X-API-Key': 'sk-YOUWARE' } },
-      { name: 'OpenAI Compatible', headers: { 'Authorization': 'Bearer sk-YOUWARE', 'Content-Type': 'application/json' } }
-    ];
-    
-    for (const method of authMethods) {
-      try {
-        const authTest = await fetch('https://api.youware.com/public/v1/ai/models', {
-          method: 'GET',
-          headers: method.headers
-        });
-        
-        results.push({
-          timestamp: new Date().toISOString(),
-          category: 'Authentication',
-          test: `Auth Method: ${method.name}`,
-          status: authTest.ok ? 'success' : 'error',
-          message: `${method.name} authentication: ${authTest.status} ${authTest.statusText}`,
-          details: { 
-            method: method.name,
-            status: authTest.status,
-            headers: method.headers,
-            responseHeaders: Object.fromEntries(authTest.headers.entries())
-          }
-        });
-        
-        if (authTest.ok) {
-          try {
-            const responseData = await authTest.json();
-            results.push({
-              timestamp: new Date().toISOString(),
-              category: 'Authentication',
-              test: `${method.name} Response Data`,
-              status: 'info',
-              message: `Successfully parsed response data`,
-              details: responseData
-            });
-          } catch (parseError) {
-            results.push({
-              timestamp: new Date().toISOString(),
-              category: 'Authentication',
-              test: `${method.name} Response Parsing`,
-              status: 'warning',
-              message: `Failed to parse response: ${(parseError as Error).message}`,
-              details: { error: parseError }
-            });
-          }
+
+    // Test authentication with environment-aware API
+    try {
+      const authTest = await fetch('https://api.youware.com/public/v1/ai/models', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer sk-YOUWARE'
         }
-        
-      } catch (authError) {
-        results.push({
-          timestamp: new Date().toISOString(),
-          category: 'Authentication',
-          test: `Auth Method: ${method.name}`,
-          status: 'error',
-          message: `${method.name} failed: ${(authError as Error).message}`,
-          details: { method: method.name, error: authError }
-        });
+      });
+
+      results.push({
+        timestamp: new Date().toISOString(),
+        category: 'Authentication',
+        test: 'YouWare Environment Authentication',
+        status: authTest.ok ? 'success' : 'error',
+        message: `Authentication test: ${authTest.status} ${authTest.statusText}`,
+        details: {
+          endpoint: '/models',
+          status: authTest.status,
+          responseHeaders: Object.fromEntries(authTest.headers.entries())
+        }
+      });
+
+      if (authTest.ok) {
+        try {
+          const responseData = await authTest.json();
+          results.push({
+            timestamp: new Date().toISOString(),
+            category: 'Authentication',
+            test: 'Authentication Response Data',
+            status: 'info',
+            message: `Successfully parsed response data`,
+            details: responseData
+          });
+        } catch (parseError) {
+          results.push({
+            timestamp: new Date().toISOString(),
+            category: 'Authentication',
+            test: 'Authentication Response Parsing',
+            status: 'warning',
+            message: `Failed to parse response: ${(parseError as Error).message}`,
+            details: { error: parseError }
+          });
+        }
       }
+
+    } catch (authError) {
+      results.push({
+        timestamp: new Date().toISOString(),
+        category: 'Authentication',
+        test: 'YouWare Environment Authentication',
+        status: 'error',
+        message: `Authentication failed: ${(authError as Error).message}`,
+        details: { error: authError }
+      });
     }
     
     return results;
@@ -622,8 +621,8 @@ export function DeepDebugger() {
 
   const runModelSpecificTests = async (): Promise<DebugResult[]> => {
     const results: DebugResult[] = [];
-    
-    // Test nano-banana model specifically
+
+    // Test nano-banana model specifically (source_code (11) pattern)
     try {
       const nanoBananaTest = await fetch('https://api.youware.com/public/v1/ai/images/generations', {
         method: 'POST',

@@ -1,12 +1,13 @@
 /**
  * YouWare環境検出ユーティリティ
- * 本番環境、開発環境を自動判定し、適切なAPI設定を提供
+ * 本番環境、プレビュー環境、開発環境を自動判定し、適切なAPI設定を提供
  */
 
 export interface EnvironmentConfig {
   isYouWareProduction: boolean;
   isYouWareEditor: boolean;
   isYouWareProject: boolean;
+  isYouWarePreview: boolean;
   isLocalDevelopment: boolean;
   apiBaseUrl: string;
   apiKey: string;
@@ -15,7 +16,7 @@ export interface EnvironmentConfig {
 }
 
 /**
- * 現在の環境を検出
+ * 現在の環境を検出（YouWareプレビュー環境対応版）
  */
 export function detectEnvironment(): EnvironmentConfig {
   const currentUrl = window.location.href;
@@ -28,7 +29,15 @@ export function detectEnvironment(): EnvironmentConfig {
 
   const isYouWareProject = currentUrl.includes('youware.app/project');
 
-  const isYouWareProduction = isYouWareEditor || isYouWareProject;
+  // YouWareプレビュー環境の判定（改善版）
+  const isYouWarePreview = hostname.includes('.preview.yourware.so') ||
+                          hostname.includes('.preview.youware.so') ||
+                          hostname.includes('yourware.so') ||
+                          hostname.includes('youware.so') ||
+                          // UUIDパターンマッチング
+                          /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/.test(hostname);
+
+  const isYouWareProduction = isYouWareEditor || isYouWareProject || isYouWarePreview;
 
   const isLocalDevelopment = hostname === 'localhost' ||
                              hostname === '127.0.0.1' ||
@@ -41,19 +50,17 @@ export function detectEnvironment(): EnvironmentConfig {
   let headers: Record<string, string> = {};
 
   if (isYouWareProduction) {
-    // 本番YouWare環境
+    // 本番/プレビューYouWare環境
     apiBaseUrl = 'https://api.youware.com/public/v1/ai';
     apiKey = 'sk-YOUWARE';
 
     // 本番環境では追加のヘッダーが必要な場合がある
     headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-      'X-YouWare-Environment': 'production',
-      'X-Requested-With': 'XMLHttpRequest'
+      'Authorization': `Bearer ${apiKey}`
     };
 
-    // 本番環境では特定のCORS設定が必要
+    // CORS設定
     corsMode = 'cors';
   } else if (isLocalDevelopment) {
     // ローカル開発環境
@@ -83,6 +90,7 @@ export function detectEnvironment(): EnvironmentConfig {
     isYouWareProduction,
     isYouWareEditor,
     isYouWareProject,
+    isYouWarePreview,
     isLocalDevelopment,
     apiBaseUrl,
     apiKey,
@@ -95,7 +103,8 @@ export function detectEnvironment(): EnvironmentConfig {
     url: currentUrl,
     hostname,
     pathname,
-    detected: isYouWareProduction ? 'YouWare Production' :
+    detected: isYouWareProduction ?
+              (isYouWarePreview ? 'YouWare Preview' : 'YouWare Production') :
               isLocalDevelopment ? 'Local Development' :
               'Unknown Environment',
     config
@@ -105,20 +114,48 @@ export function detectEnvironment(): EnvironmentConfig {
 }
 
 /**
- * globalThis.ywConfigの存在確認と取得
+ * globalThis.ywConfigの存在確認と取得（line_art_generator対応）
  */
 export function getYouWareConfig(): any {
   try {
     // YouWare環境ではglobalThis.ywConfigが利用可能
     if (typeof globalThis !== 'undefined' && globalThis.ywConfig) {
-      console.log('✅ YouWare Config Found:', globalThis.ywConfig);
-      return globalThis.ywConfig;
+      const config = globalThis.ywConfig;
+
+      // line_art_generatorが存在しない場合は補完
+      if (config.ai_config && !config.ai_config.line_art_generator) {
+        console.log('⚠️ line_art_generator not found, creating fallback');
+        config.ai_config.line_art_generator = {
+          model: 'nano-banana',
+          prompt_template: (params: any) =>
+            `Generate a black and white line drawing from a 45° angle: ${params.locationContext}`,
+          response_format: 'b64_json',
+          n: 1
+        };
+      }
+
+      console.log('✅ YouWare Config Found:', config);
+      return config;
     }
 
     // window経由でも確認
     if (typeof window !== 'undefined' && (window as any).ywConfig) {
-      console.log('✅ YouWare Config Found (via window):', (window as any).ywConfig);
-      return (window as any).ywConfig;
+      const config = (window as any).ywConfig;
+
+      // line_art_generatorが存在しない場合は補完
+      if (config.ai_config && !config.ai_config.line_art_generator) {
+        console.log('⚠️ line_art_generator not found, creating fallback');
+        config.ai_config.line_art_generator = {
+          model: 'nano-banana',
+          prompt_template: (params: any) =>
+            `Generate a black and white line drawing from a 45° angle: ${params.locationContext}`,
+          response_format: 'b64_json',
+          n: 1
+        };
+      }
+
+      console.log('✅ YouWare Config Found (via window):', config);
+      return config;
     }
 
     console.log('⚠️ YouWare Config not found');
@@ -164,27 +201,29 @@ export function getAIConfig(scene?: string) {
 
 /**
  * API呼び出しのラッパー（環境対応）
+ * source_code (11)の成功パターンをベースに修正
  */
 export async function callYouWareAPI(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<Response> {
-  const env = detectEnvironment();
-  const fullUrl = endpoint.startsWith('http') ? endpoint : `${env.apiBaseUrl}${endpoint}`;
+  // シンプルにAPIエンドポイントを構築
+  const apiBaseUrl = 'https://api.youware.com/public/v1/ai';
+  const fullUrl = endpoint.startsWith('http') ? endpoint : `${apiBaseUrl}${endpoint}`;
 
+  // source_code (11)と同じヘッダー設定
   const finalOptions: RequestInit = {
     ...options,
-    mode: env.corsMode,
-    credentials: env.isYouWareProduction ? 'include' : 'same-origin',
+    mode: 'cors',
     headers: {
-      ...env.headers,
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer sk-YOUWARE',
       ...(options.headers || {})
     }
   };
 
   console.log('🚀 API Call:', {
     url: fullUrl,
-    environment: env.isYouWareProduction ? 'Production' : 'Development',
     options: finalOptions
   });
 

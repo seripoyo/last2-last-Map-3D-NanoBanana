@@ -111,8 +111,6 @@ function App() {
         config: { n: config.n, response_format: config.response_format }
       });
 
-      // AI SDK準拠: createOpenAI + fetch APIを直接使用
-      console.log('🔧 Initializing AI SDK OpenAI client...');
       const response = await fetch('https://api.youware.com/public/v1/ai/images/generations', {
         method: 'POST',
         headers: {
@@ -122,12 +120,8 @@ function App() {
         body: JSON.stringify({
           model: config.model,
           prompt: prompt,
-          n: config.n || 1,
-          response_format: config.response_format || 'b64_json',
-          // nano-banana supports custom size via prompt - no explicit size parameter needed
-          ...(config.model !== 'nano-banana' && config.model !== 'gemini-2.5-flash-image' ? {
-            size: '1024x1024'
-          } : {})
+          response_format: config.response_format,
+          size: config.size
         })
       });
 

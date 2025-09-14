@@ -36,8 +36,12 @@ export function DirectAIClient() {
         message: `Testing direct API authentication with nano-banana model in ${env.isYouWareProduction ? 'production' : 'development'} environment...`
       });
 
-      const authResponse = await callYouWareAPI('/images/generations', {
+      const authResponse = await fetch('https://api.youware.com/public/v1/ai/images/generations', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer sk-YOUWARE'
+        },
         body: JSON.stringify({
           model: 'nano-banana',
           prompt: 'DIRECT AI TEST: Generate a simple red square for authentication verification. This is a test prompt to verify nano-banana model access.',
