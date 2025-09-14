@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { loadMapsLibraries } from "./utils/mapsLoader";
+import { initializeAISdk } from "./utils/aiSdkLoader";
 
 // ywConfig初期化関数
 const initializeYwConfig = async () => {
@@ -92,7 +93,10 @@ const start = async () => {
     // Step 1: ywConfigを初期化
     await initializeYwConfig();
 
-    // Step 2: Google Maps APIを初期化
+    // Step 2: AI SDKを初期化
+    await initializeAISdk();
+
+    // Step 3: Google Maps APIを初期化
     await loadMapsLibraries();
 
     if (import.meta.env.DEV) {

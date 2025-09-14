@@ -1,0 +1,36 @@
+✅ Package @ai-sdk/openai loaded successfully via aiSdkLoader: 
+Object {available: true, moduleKeys: Array(2), moduleType: "object", hasDefault: false, loadTime: 796, …}
+🔍 Checking package: ai
+✅ Package ai loaded successfully via aiSdkLoader: 
+Object {available: true, moduleKeys: Array(76), moduleType: "object", hasDefault: false, loadTime: 0, …}
+🔍 Checking package: zod
+✅ Package zod loaded successfully via aiSdkLoader: 
+Object {available: true, moduleKeys: Array(109), moduleType: "object", hasDefault: true, loadTime: 0, …}
+🔧 Testing @ai-sdk/openai import and client creation...
+🌍 Environment Detection: 
+Object {url: "https://647409dd-d9a5-4a8e-98ff-446acc1e31e0--1757822400--1f7371da.preview.yourware.so/", hostname: "647409dd-d9a5-4a8e-98ff-446acc1e31e0--1757822400--1f7371da.preview.yourware.so", pathname: "/", detected: "Unknown Environment", config: {…}}
+🌍 Environment Detection: 
+Object {url: "https://647409dd-d9a5-4a8e-98ff-446acc1e31e0--1757822400--1f7371da.preview.yourware.so/", hostname: "647409dd-d9a5-4a8e-98ff-446acc1e31e0--1757822400--1f7371da.preview.yourware.so", pathname: "/", detected: "Unknown Environment", config: {…}}
+🚀 API Call: 
+Object {url: "https://api.youware.com/public/v1/ai/health", environment: "Development", options: {…}}
+❌ Network Error: Error: Failed to fetch (aiapp.youware.com)
+🌍 Environment Detection: 
+Object {url: "https://647409dd-d9a5-4a8e-98ff-446acc1e31e0--1757822400--1f7371da.preview.yourware.so/", hostname: "647409dd-d9a5-4a8e-98ff-446acc1e31e0--1757822400--1f7371da.preview.yourware.so", pathname: "/", detected: "Unknown Environment", config: {…}}
+🚀 API Call: 
+Object {url: "https://api.youware.com/public/v1/ai/models", environment: "Development", options: {…}}
+❌ Network Error: Error: Failed to fetch (aiapp.youware.com)
+📊 COMPREHENSIVE DEBUG REPORT GENERATED: 
+Object {timestamp: "2025-09-14T02:45:02.902Z", sessionId: "debug_1757817891084_a5b7wpelo", environment: {…}, ywConfig: {…}, aiSdk: {…}, …}
+🎯 DEEP DEBUG COMPLETED: 
+Object {sessionId: "debug_1757817891084_a5b7wpelo", duration: 11819, totalTests: 0, reportGenerated: true}
+📥 Debug report downloaded: youware-deep-debug-report-2025-09-14T02-45-25.json
+🎨 画像生成開始: 
+Object {type: "hologram", place: "東京駅"}
+🤖 AI API リクエスト: 
+Object {model: "nano-banana", type: "hologram", prompt: "Create a futuristic holographic projection of historical railway station building from a 45° angle.…", place: "東京駅"}
+🌍 Environment Detection: 
+Object {url: "https://647409dd-d9a5-4a8e-98ff-446acc1e31e0--1757822400--1f7371da.preview.yourware.so/", hostname: "647409dd-d9a5-4a8e-98ff-446acc1e31e0--1757822400--1f7371da.preview.yourware.so", pathname: "/", detected: "Unknown Environment", config: {…}}
+🚀 API Call: 
+Object {url: "https://api.youware.com/public/v1/ai/images/generations", environment: "Development", options: {…}}
+✅ 画像生成完了: 
+Object {type: "hologram", model: "nano-banana", place: "東京駅", processingTime: "8852ms"}

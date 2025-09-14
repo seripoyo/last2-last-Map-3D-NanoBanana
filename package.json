@@ -19,6 +19,7 @@
     "gsap": "^3.13.0",
     "i18next": "^23.10.1",
     "i18next-browser-languagedetector": "^7.2.0",
+    "jszip": "^3.10.1",
     "lucide-react": "^0.533.0",
     "matter-js": "^0.20.0",
     "react": "^18.3.1",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@types/google.maps": "^3.58.1",
+    "@types/jszip": "^3.4.0",
     "@types/matter-js": "^0.20.0",
     "@types/node": "^24.0.14",
     "@types/react": "^18.3.1",

@@ -1,0 +1,67 @@
+{
+  "timestamp": "2025-09-14T02:53:21.104Z",
+  "sessionId": "debug_1757818399229_9jhhpvt50",
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "url": "https://41649dea-9836-46a7-b3db-181ae7e04626--1757822400--3723a96b.preview.yourware.so/",
+    "platform": "Win32",
+    "language": "ja-JP",
+    "cookieEnabled": true,
+    "onlineStatus": true
+  },
+  "ywConfig": {
+    "exists": true,
+    "structure": [
+      "name",
+      "version",
+      "description",
+      "project_type",
+      "ai_config"
+    ],
+    "aiConfig": {
+      "isometric_generator": {
+        "model": "nano-banana",
+        "response_format": "b64_json",
+        "n": 1
+      },
+      "hologram_generator": {
+        "model": "nano-banana",
+        "response_format": "b64_json",
+        "n": 1
+      },
+      "line_art_generator": {
+        "model": "nano-banana",
+        "response_format": "b64_json",
+        "n": 1
+      }
+    },
+    "errors": []
+  },
+  "aiSdk": {
+    "packages": {
+      "aiSdkOpenai": false,
+      "ai": false,
+      "zod": false
+    },
+    "connectivity": [],
+    "authentication": [],
+    "models": []
+  },
+  "network": {
+    "tests": [],
+    "timing": {
+      "totalDuration": 1875,
+      "averageResponseTime": null
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": {
+    "totalTests": 0,
+    "passed": 0,
+    "failed": 0,
+    "warnings": 0,
+    "criticalIssues": [],
+    "recommendations": []
+  }
+}
