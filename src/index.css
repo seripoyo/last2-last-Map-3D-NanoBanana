@@ -1,0 +1,313 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Liberty Button Styles */
+.liberty-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 16px 42px;
+  background: linear-gradient(180deg, #61d2c0 0%, #1aa9aa 100%);
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+    0 10px 20px rgba(0, 0, 0, 0.25);
+  min-width: 350px;
+}
+
+@media (min-width: 1024px) {
+  .liberty-button {
+    max-width: 450px;
+    margin-bottom: 1.55rem !important;
+  }
+}
+
+.liberty-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.25) 0%, 
+    rgba(255, 255, 255, 0.1) 100%);
+  border-radius: 50px 50px 0 0;
+  pointer-events: none;
+}
+
+.liberty-button::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 10%;
+  right: 10%;
+  height: 20px;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.5) 0%, 
+    rgba(255, 255, 255, 0) 100%);
+  border-radius: 50%;
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.button-text {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  flex-grow: 1;
+  text-align: center;
+  padding-right: 20px;
+}
+
+.play-button {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  flex-shrink: 0;
+}
+
+.play-triangle {
+  width: 0;
+  height: 0;
+  border-left: 9px solid #1aa9aa;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  margin-left: 2px;
+}
+
+.liberty-button:hover {
+  background: linear-gradient(180deg, #6DDCC9 0%, #1FB3B4 100%);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.liberty-button:hover .play-triangle {
+  border-left-color: #189899;
+}
+
+.liberty-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    inset 0 3px 6px rgba(0, 0, 0, 0.2),
+    inset 0 -1px 3px rgba(255, 255, 255, 0.2);
+}
+
+/* Generate Button - Orange Color */
+.generate-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 16px 42px;
+  background: linear-gradient(180deg, #FF8C42 0%, #FF6B35 100%);
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+    0 10px 20px rgba(0, 0, 0, 0.25);
+  min-width: 280px;
+  margin-top: 1rem;
+}
+
+.generate-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.25) 0%, 
+    rgba(255, 255, 255, 0.1) 100%);
+  border-radius: 50px 50px 0 0;
+  pointer-events: none;
+}
+
+.generate-button::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 10%;
+  right: 10%;
+  height: 20px;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.5) 0%, 
+    rgba(255, 255, 255, 0) 100%);
+  border-radius: 50%;
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.generate-button .play-triangle {
+  border-left-color: #FF6B35;
+}
+
+.generate-button:hover {
+  background: linear-gradient(180deg, #FF9A56 0%, #FF7849 100%);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.generate-button:hover .play-triangle {
+  border-left-color: #E55A39;
+}
+
+.generate-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    inset 0 3px 6px rgba(0, 0, 0, 0.2),
+    inset 0 -1px 3px rgba(255, 255, 255, 0.2);
+}
+
+.generate-button:disabled {
+  background: linear-gradient(180deg, #9CA3AF 0%, #6B7280 100%);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.generate-button:disabled .play-triangle {
+  border-left-color: #6B7280;
+}
+
+/* Grid Layout Customizations */
+@media (min-width: 1024px) {
+  .lg\:custom-three-column {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .lg\:left-column {
+    grid-area: 1 / 1 / 2 / 2;
+    text-align: center;
+  }
+  
+  .lg\:right-column {
+    grid-area: 1 / 2 / 2 / 4;
+  }
+}
+
+/* Search Form Styles */
+.search-form-container {
+  display: flex;
+  justify-content: center;
+}
+
+.search-form-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  border: 2px solid #4cc7b9;
+  border-radius: 25px;
+  width: 100%;
+  max-width: 450px;
+  background: white;
+}
+
+.search-form-1 label {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.search-form-1 input {
+  width: 100%;
+  flex: 1;
+  height: 45px;
+  padding: 5px 15px;
+  border: none;
+  box-sizing: border-box;
+  font-size: 13px;
+  outline: none;
+}
+
+.search-form-1 input::placeholder {
+  color: #777777;
+}
+
+.search-form-1 button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  min-width: 50px;
+  height: 45px;
+  border: none;
+  background-color: #4cc7b9;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Results Section Margin */
+.results-section {
+  margin-top: 5rem;
+}
+
+/* Gradient Backgrounds for Results Cards */
+.bg-white {
+  background-image: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+}
+
+.bg-gradient-to-br.from-\[--141E57\].to-\[--192F8F\] {
+  background-image: linear-gradient(to bottom right, #141E57, #192F8F);
+}
+
+.search-form-1 button::after {
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z' fill='%23fff'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  content: '';
+}
+
+/* Custom CSS modifications for specific Tailwind classes */
+
+/* Modification 1: For .relative.w-full.h-64 class */
+.relative.w-full.h-64 {
+  min-height: 16rem;
+  max-height: 19rem;
+}
+
+/* Modification 2: For p.text-sm.text-[#8A3216].mt-2 selector */
+p.text-sm.text-\[\#8A3216\].mt-2 {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+/* Modification 3: For h1.text-2xl.font-bold.text-[#411307].mb-2 selector */
+h1.text-2xl.font-bold.text-\[\#411307\].mb-2 {
+  margin-bottom: 4rem !important;
+  margin-top: 2rem;
+}
+
